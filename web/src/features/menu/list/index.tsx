@@ -72,8 +72,22 @@ const ListMenu: React.FC = () => {
   };
 
   const moveMenu = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    // console.log("wtf", Object.keys(e).map(k => `${k}: ${(e as any)[k]}`));
     if (firstRenderRef.current) firstRenderRef.current = false;
-    switch (e.code) {
+    let code = null;
+    if (e.keyCode === 40) code = 'ArrowDown';
+    if (e.keyCode === 38) code = 'ArrowUp';
+    if (e.keyCode === 39) code = 'ArrowRight';
+    if (e.keyCode === 37) code = 'ArrowLeft';
+    if (e.keyCode === 13) code = 'Enter';
+    if (e.keyCode === 27) {
+      e.preventDefault();
+      code = 'Escape';
+      closeMenu(false, 'Escape');
+      return;
+    }
+
+    switch (code) {
       case 'ArrowDown':
         setSelected((selected) => {
           if (selected >= menu.items.length - 1) return (selected = 0);
